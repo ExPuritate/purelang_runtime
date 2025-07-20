@@ -543,7 +543,7 @@ dependencies = [
  "enumflags2",
  "num_enum",
  "pure_lang_binary_proc_macros",
- "pure_lang_global",
+ "pure_lang_global 0.1.0",
  "thiserror",
 ]
 
@@ -562,7 +562,7 @@ name = "pure_lang_gc"
 version = "0.1.0"
 dependencies = [
  "pure_lang_gc_derive",
- "pure_lang_global",
+ "pure_lang_global 0.1.0 (git+https://github.com/ExPuritate/purelang_global.git)",
 ]
 
 [[package]]
@@ -594,7 +594,32 @@ dependencies = [
  "iota",
  "num_enum",
  "paste",
- "pure_lang_proc_macros",
+ "pure_lang_proc_macros 0.1.0",
+ "thiserror",
+ "tracing",
+]
+
+[[package]]
+name = "pure_lang_global"
+version = "0.1.0"
+source = "git+https://github.com/ExPuritate/purelang_global.git#212d456996adb3ae754e9e709b7de335e243821d"
+dependencies = [
+ "anyhow",
+ "bon",
+ "borsh",
+ "cfg-if",
+ "const_format",
+ "derive-ctor",
+ "derive_more",
+ "enumflags2",
+ "fancy-regex",
+ "faststr",
+ "getset",
+ "indexmap",
+ "iota",
+ "num_enum",
+ "paste",
+ "pure_lang_proc_macros 0.1.0 (git+https://github.com/ExPuritate/purelang_global.git)",
  "thiserror",
  "tracing",
 ]
@@ -602,6 +627,20 @@ dependencies = [
 [[package]]
 name = "pure_lang_proc_macros"
 version = "0.1.0"
+dependencies = [
+ "convert_case 0.8.0",
+ "proc-macro-crate",
+ "proc-macro2",
+ "quote",
+ "syn 2.0.101",
+ "tracing",
+ "virtue",
+]
+
+[[package]]
+name = "pure_lang_proc_macros"
+version = "0.1.0"
+source = "git+https://github.com/ExPuritate/purelang_global.git#212d456996adb3ae754e9e709b7de335e243821d"
 dependencies = [
  "convert_case 0.8.0",
  "proc-macro-crate",
@@ -625,7 +664,7 @@ dependencies = [
  "paste",
  "pure_lang_binary",
  "pure_lang_gc",
- "pure_lang_global",
+ "pure_lang_global 0.1.0 (git+https://github.com/ExPuritate/purelang_global.git)",
  "pure_lang_runtime_export",
  "sealed",
  "windows",
@@ -636,7 +675,7 @@ name = "pure_lang_runtime_export"
 version = "0.1.0"
 dependencies = [
  "pure_lang_binary",
- "pure_lang_global",
+ "pure_lang_global 0.1.0 (git+https://github.com/ExPuritate/purelang_global.git)",
 ]
 
 [[package]]
