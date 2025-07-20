@@ -1,0 +1,49 @@
+[package]
+name = "pure_lang_runtime"
+version = { workspace = true }
+edition = "2024"
+
+[workspace]
+package.version = "0.1.0"
+members = ["crates/*"]
+
+[workspace.dependencies]
+global = { package = "pure_lang_global", path = "../global" }
+enumflags2 = { version = "0.7.11", features = ["std"] }
+derive_more = { version = "2.0.1", features = ["full", "std"] }
+sealed = "0.6"
+binary = { package = "pure_lang_binary", path = "../binary" }
+codepage = "0.1.2"
+encoding_rs = "0.8.35"
+paste = "1.0.15"
+const_format = "0.2.34"
+
+[target.'cfg(windows)'.dependencies.windows]
+version = "0.61"
+features = [
+    "Win32_System_Console",
+    "Win32_Foundation",
+    "Win32_Storage_FileSystem",
+    "Win32_System_IO"
+]
+
+[target.'cfg(unix)'.dependencies.libc]
+version = "1.0.0-alpha.1"
+features = ["std"]
+
+[dependencies]
+sealed = { workspace = true }
+global = { workspace = true }
+enumflags2 = { workspace = true }
+derive_more = { workspace = true }
+gc = { path = "./crates/gc", package = "pure_lang_gc" }
+binary = { workspace = true }
+codepage = { workspace = true }
+encoding_rs = { workspace = true }
+export = { path = "./crates/export", package = "pure_lang_runtime_export" }
+paste = { workspace = true }
+const_format = { workspace = true }
+
+[lib]
+name = "Runtime"
+crate-type = ["dylib"]

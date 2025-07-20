@@ -1,0 +1,8 @@
+[package]
+name = "pure_lang_gc"
+edition = "2024"
+version.workspace = true
+
+[dependencies]
+global = { workspace = true }
+derives = { package = "pure_lang_gc_derive", path = "../gc_derive" }
