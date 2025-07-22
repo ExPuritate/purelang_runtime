@@ -172,7 +172,7 @@ mod struct_object {
     use super::Value;
     use crate::type_system::get_traits::MTGetParent;
     use crate::type_system::{CommonMethodTable, Struct, StructField};
-    use crate::vm::VM;
+    
     use gc::Trace;
     use global::derive_ctor::ctor;
     use global::getset::Getters;

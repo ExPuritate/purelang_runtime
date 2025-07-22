@@ -1,6 +1,6 @@
 use crate::pl_lib_impl::StructLoadToCore;
 use crate::type_system::{Assembly, AssemblyManager, CommonMethodTable, Struct, TypeHandle};
-use crate::type_system::{Class, CommonMethod};
+use crate::type_system::CommonMethod;
 use crate::value::{ByRefValue, StringValue, Value};
 use crate::vm::CPU;
 use enumflags2::make_bitflags;
@@ -10,7 +10,7 @@ use global::attrs::{MethodAttr, MethodImplementationFlags};
 use global::attrs::{StructImplementationFlags, TypeAttr, TypeSpecificAttr, Visibility};
 use global::errors::{DynamicCheckingItem, RuntimeError};
 use global::string_name;
-use global::{IndexMap, StringTypeReference, indexmap};
+use global::{StringTypeReference, indexmap};
 use std::sync::Arc;
 
 pub struct System_ValueType;

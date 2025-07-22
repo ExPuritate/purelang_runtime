@@ -2,7 +2,7 @@ use crate::pl_lib_impl::System_Console_::console_pal::ConsoleFile;
 use encoding_rs::Encoding;
 use enumflags2::{BitFlags, bitflags};
 use global::errors::{RuntimeError, RuntimeMayBeInvalidOperation};
-use global::getset::{CopyGetters, Getters};
+use global::getset::CopyGetters;
 use std::hash::{Hash, Hasher};
 use std::io::Write;
 use std::sync::{Mutex, OnceLock};

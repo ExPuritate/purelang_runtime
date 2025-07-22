@@ -13,7 +13,7 @@ use global::attrs::{
     Visibility,
 };
 use global::errors::{DynamicCheckingItem, RuntimeError};
-use global::{IndexMap, StringMethodReference, StringTypeReference, indexmap, string_name};
+use global::{StringMethodReference, StringTypeReference, indexmap, string_name};
 use std::sync::Arc;
 
 pub struct System_Object;

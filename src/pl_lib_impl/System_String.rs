@@ -11,7 +11,7 @@ use global::attrs::{
     ClassImplementationFlags, MethodAttr, MethodImplementationFlags, TypeAttr, TypeSpecificAttr,
     Visibility,
 };
-use global::{IndexMap, StringTypeReference, indexmap, lit_string_index_map, string_name};
+use global::{IndexMap, StringTypeReference, lit_string_index_map, string_name};
 
 use crate::pl_lib_impl::System_Object::System_Object;
 use std::sync::Arc;
