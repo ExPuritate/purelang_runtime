@@ -13,6 +13,8 @@ use crate::pl_lib_impl::System_String::System_String;
 use crate::pl_lib_impl::System_ValueType::System_ValueType;
 use crate::pl_lib_impl::System_Void::System_Void;
 use crate::pl_lib_impl::{ClassLoadToCore, StructLoadToCore, System_Integers};
+use crate::type_system::Struct;
+use crate::type_system::StructField;
 use binary::TypeDef;
 use export::{AssemblyManagerTrait, AssemblyTrait};
 use global::{IndexMap, Result, StringName, StringTypeReference, ThreadSafe, errors::RuntimeError};
@@ -182,7 +184,59 @@ impl AssemblyManagerTrait for AssemblyManager {
                                 .try_collect()?,
                         )?)
                     }
-                    TypeDef::Struct => todo!(),
+                    TypeDef::Struct(s) => {
+                        TypeHandle::Struct(Struct::try_new(
+                            &assembly,
+                            s.attr(),
+                            s.name().clone(),
+                            |r#struct| {
+                                CommonMethodTable::try_new(
+                                    |mt_ptr| {
+                                        s.methods().iter().map(|(m_name, m)| {
+                                            let method = CommonMethod::new(
+                                                m.name().clone(),
+                                                m.attr(),
+                                                mt_ptr,
+                                                (&**m.instructions()).into(),
+                                                map_ty(m.ret_type().clone()),
+                                                m.args()
+                                                    .iter()
+                                                    .cloned()
+                                                    .map(map_ty)
+                                                    .collect(),
+                                                Arc::new(m.type_vars().iter()
+                                                    .map(|(g_name, g_binding)| (g_name.clone(), TypeVar::Canon(GenericBinding {
+                                                        implemented_interfaces: g_binding
+                                                            .implemented_interfaces()
+                                                            .iter()
+                                                            .cloned()
+                                                            .map(map_ty)
+                                                            .collect(),
+                                                        parent: g_binding.parent().clone().map(TypeHandle::Unloaded),
+                                                    }))).collect()),
+                                            );
+                                            Ok((m_name.clone(), method))
+                                        }).try_collect()
+                                    },
+                                    &r#struct,
+                                    s.parent().clone().map(TypeHandle::Unloaded),
+                                )
+                            },
+                            s.fields()
+                                .iter()
+                                .map(|(f_name, f)| {
+                                    Ok::<_, global::Error>((
+                                        f_name.clone(),
+                                        StructField::new(
+                                            f.name().clone(),
+                                            f.attr(),
+                                            map_ty(f.ty().clone()),
+                                        ),
+                                    ))
+                                })
+                                .try_collect()?,
+                        )?)
+                    }
                 };
                 assembly.add_type(ty);
             }

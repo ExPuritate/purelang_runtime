@@ -3,9 +3,10 @@ use crate::type_system::get_traits::{GetAssemblyMust, GetInstruction, GetTypeVar
 use crate::value::{Array, ByRefValue};
 use crate::{value::Value, vm::CPU};
 use export::AssemblyTrait;
+use global::StringMethodReference;
 use global::instruction::StringInstruction;
 use global::{
-    FastStr, IndexMap, Result, StringName, StringTypeReference, attrs::MethodAttr,
+    IndexMap, Result, StringName, StringTypeReference, attrs::MethodAttr,
     errors::RuntimeError, string_name,
 };
 use std::{any::Any, cell::Cell, sync::Arc};
@@ -102,15 +103,16 @@ impl<T: Any + GetTypeName> CommonMethod<T> {
 
 impl<T: Any + GetTypeName> CommonMethod<T> {
     pub fn make_generic(&self, type_vars: Arc<IndexMap<StringName, TypeHandle>>) -> Result<Self> {
-        let name = StringName::from(FastStr::from_string(format!(
-            "{}[{}]",
-            self.name,
-            type_vars
-                .iter()
-                .map(|x| x.1.name().as_str().to_owned())
-                .collect::<Vec<_>>()
-                .join("|")
-        )));
+        let name = StringMethodReference::WithGeneric(
+            self.name.clone(),
+            Arc::new(
+                type_vars
+                    .iter()
+                    .map(|(k, v)| (k.clone(), v.string_reference()))
+                    .collect::<IndexMap<_, _>>(),
+            ),
+        )
+        .string_name_repr();
         Ok(Self {
             name,
             attr: self.attr,

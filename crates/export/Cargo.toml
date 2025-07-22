@@ -1,8 +1,8 @@
 [package]
 name = "pure_lang_runtime_export"
 edition = "2024"
-version.workspace = true
+version = "0.1.0"
 
 [dependencies]
-global = { workspace = true }
-binary = { workspace = true }
+global = { package = "pure_lang_global", git = "https://github.com/ExPuritate/purelang_global.git" }
+binary = { package = "pure_lang_binary", git = "https://github.com/ExPuritate/purelang_binary.git" }

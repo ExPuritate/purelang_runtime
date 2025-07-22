@@ -33,6 +33,28 @@ pub struct Struct {
 }
 
 impl Struct {
+    pub fn try_new<F: FnOnce(Arc<Struct>) -> global::Result<*mut CommonMethodTable<Self>>>(
+        assem: &Arc<Assembly>,
+        attr: TypeAttr,
+        name: StringName,
+        mt_generator: F,
+        fields: IndexMap<StringName, Field>,
+    ) -> global::Result<Arc<Self>> {
+        let this = Arc::new(Self {
+            assem: Arc::downgrade(assem),
+            attr,
+            name: name.clone(),
+            general_name: name,
+            mt: Cell::new(ptr::null_mut()),
+            fields,
+            type_vars: Arc::new(IndexMap::new()),
+        });
+        let mt = mt_generator(this.clone())?;
+        assert!(!mt.is_null());
+        this.mt.set(mt.cast());
+        Ok(this)
+    }
+
     pub fn new<F: FnOnce(Arc<Struct>) -> *mut CommonMethodTable<Self>>(
         assem: &Arc<Assembly>,
         attr: TypeAttr,

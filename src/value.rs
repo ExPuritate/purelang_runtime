@@ -50,7 +50,7 @@ impl Value {
             Value::Int128(_) => Ok(core_type!(cpu.vm(), "System.Int128")),
             Value::Struct(s) => Ok(s.ty()),
             Value::Reference(gc) => Ok(gc.ty(cpu.vm())),
-            Value::RegisterReference(_) => todo!(),
+            Value::RegisterReference(_) => unreachable!(),
         }
     }
     pub fn string_type_reference(&self) -> StringTypeReference {
@@ -69,9 +69,9 @@ impl Value {
             Value::Int32(_) => StringTypeReference::core_static_single_type("System.Int32"),
             Value::Int64(_) => StringTypeReference::core_static_single_type("System.Int64"),
             Value::Int128(_) => StringTypeReference::core_static_single_type("System.Int128"),
-            Value::Struct(_) => todo!(),
+            Value::Struct(s) => s.ty().string_reference(),
             Value::Reference(gc) => gc.string_type_reference(),
-            Value::RegisterReference(_) => todo!(),
+            Value::RegisterReference(_) => unreachable!(),
         }
     }
 }
@@ -397,13 +397,15 @@ mod array {
 
     impl Array {
         pub fn ty(&self, vm: Arc<VM>) -> TypeHandle {
-            vm.get_core_single_type(string_name!("System.Array`1"))
-                .unwrap()
-                .make_generic(Arc::new(indexmap! {
-                    string_name!("T") => self.t.clone()
-                }))
-                // it won't fail
-                .unwrap()
+            unsafe {
+                vm.get_core_single_type(string_name!("System.Array`1"))
+                    .unwrap()
+                    .make_generic(Arc::new(indexmap! {
+                        string_name!("@T") => self.t.clone()
+                    }))
+                    // it won't fail
+                    .unwrap_unchecked()
+            }
         }
     }
 }
