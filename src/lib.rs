@@ -20,7 +20,7 @@
     non_local_definitions,
     static_mut_refs,
     clippy::missing_transmute_annotations,
-    non_snake_case,
+    non_snake_case
 )]
 
 mod pl_lib_impl;

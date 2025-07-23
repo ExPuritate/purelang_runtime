@@ -1,6 +1,6 @@
 use crate::pl_lib_impl::System_Console_::console_pal::ConsoleFile;
 use encoding_rs::Encoding;
-use enumflags2::{bitflags, BitFlags};
+use enumflags2::{BitFlags, bitflags};
 use global::errors::{RuntimeError, RuntimeMayBeInvalidOperation};
 use global::getset::CopyGetters;
 use std::hash::{Hash, Hasher};
@@ -10,6 +10,8 @@ use std::sync::{Mutex, OnceLock};
 #[cfg_attr(unix, path = "./System_Console_/console_pal_unix.rs")]
 #[cfg_attr(windows, path = "./System_Console_/console_pal_windows.rs")]
 mod console_pal;
+
+pub(crate) mod terminal_format_strings;
 
 #[repr(i16)]
 #[allow(unused)]
@@ -75,9 +77,9 @@ static _IS_STDERR_REDIRECTED: OnceLock<bool> = OnceLock::new();
 static mut _INPUT_ENCODING: OnceLock<&'static Encoding> = OnceLock::new();
 static mut _OUTPUT_ENCODING: OnceLock<&'static Encoding> = OnceLock::new();
 
-static mut _IN: OnceLock<ConsoleFile> = OnceLock::new();
-static mut _OUT: OnceLock<ConsoleFile> = OnceLock::new();
-static mut _ERROR: OnceLock<ConsoleFile> = OnceLock::new();
+static mut _IN: OnceLock<Mutex<ConsoleFile>> = OnceLock::new();
+static mut _OUT: OnceLock<Mutex<ConsoleFile>> = OnceLock::new();
+static mut _ERROR: OnceLock<Mutex<ConsoleFile>> = OnceLock::new();
 
 #[allow(unused)]
 pub fn input_encoding() -> &'static Encoding {
@@ -117,11 +119,11 @@ pub fn set_output_encoding(encoding: &'static Encoding) -> global::Result<()> {
         console_pal::set_console_output_encoding(encoding)?;
         _OUTPUT_ENCODING = OnceLock::from(encoding);
         if _OUT.get().is_some() && !is_output_redirected() {
-            _OUT.get_mut().unwrap().flush()?;
+            _OUT.get_mut().unwrap().lock().unwrap().flush()?;
             _OUT = OnceLock::new();
         }
         if _ERROR.get().is_some() && !is_error_redirected() {
-            _ERROR.get_mut().unwrap().flush()?;
+            _ERROR.get_mut().unwrap().lock().unwrap().flush()?;
             _ERROR = OnceLock::new();
         }
         _OUTPUT_ENCODING = OnceLock::from(encoding);
@@ -145,31 +147,31 @@ pub fn is_error_redirected() -> bool {
 }
 
 #[allow(unused)]
-pub fn get_in() -> &'static mut ConsoleFile {
+pub fn get_in() -> &'static Mutex<ConsoleFile> {
     unsafe {
-        _IN.get_mut_or_init(|| {
+        _IN.get_or_init(|| {
             let _lock = SYNC_OBJECT.lock().unwrap();
-            console_pal::open_standard_input().unwrap()
+            Mutex::new(console_pal::open_standard_input().unwrap())
         })
     }
 }
 
 #[allow(unused)]
-pub fn get_out() -> &'static mut ConsoleFile {
+pub fn get_out() -> &'static Mutex<ConsoleFile> {
     unsafe {
-        _OUT.get_mut_or_init(|| {
+        _OUT.get_or_init(|| {
             let _lock = SYNC_OBJECT.lock().unwrap();
-            console_pal::open_standard_output().unwrap()
+            Mutex::new(console_pal::open_standard_output().unwrap())
         })
     }
 }
 
 #[allow(unused)]
-pub fn get_error() -> &'static mut ConsoleFile {
+pub fn get_error() -> &'static Mutex<ConsoleFile> {
     unsafe {
-        _ERROR.get_mut_or_init(|| {
+        _ERROR.get_or_init(|| {
             let _lock = SYNC_OBJECT.lock().unwrap();
-            console_pal::open_standard_error().unwrap()
+            Mutex::new(console_pal::open_standard_error().unwrap())
         })
     }
 }
@@ -442,7 +444,11 @@ pub enum ConsoleModifiers {
 
 #[allow(unused)]
 pub fn write_wchar(c: u16) {
-    get_out().write_all(&c.to_le_bytes()).unwrap();
+    get_out()
+        .lock()
+        .unwrap()
+        .write_all(&c.to_le_bytes())
+        .unwrap();
 }
 
 #[allow(nonstandard_style)]
@@ -463,7 +469,7 @@ pub mod to_vm {
     };
     use global::errors::{DynamicCheckingItem, RuntimeError};
     use global::{
-        indexmap, string_name, IndexMap, StringMethodReference, StringName, StringTypeReference,
+        IndexMap, StringMethodReference, StringName, StringTypeReference, indexmap, string_name,
     };
     use std::io::Write;
     use std::panic::Location;
@@ -580,7 +586,10 @@ pub mod to_vm {
             };
             let mut output = arg0.get().as_bytes().to_vec();
             output.push(b'\n');
-            super::get_out().write_all(output.as_slice())?;
+            super::get_out()
+                .lock()
+                .unwrap()
+                .write_all(output.as_slice())?;
             Ok(Value::Void)
         }
     }

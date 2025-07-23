@@ -24,7 +24,7 @@ features = [
     "Win32_System_Console",
     "Win32_Foundation",
     "Win32_Storage_FileSystem",
-    "Win32_System_IO"
+    "Win32_System_IO",
 ]
 
 [target.'cfg(unix)'.dependencies.libc]
@@ -43,6 +43,7 @@ encoding_rs = { workspace = true }
 export = { path = "./crates/export", package = "pure_lang_runtime_export" }
 paste = { workspace = true }
 const_format = { workspace = true }
+cfg-if = "1.0.1"
 
 [lib]
 name = "Runtime"

@@ -559,6 +559,7 @@ dependencies = [
 [[package]]
 name = "pure_lang_binary"
 version = "0.1.0"
+source = "git+https://github.com/ExPuritate/purelang_binary.git#17e9f0c0f6bbbb4620e4b05585d21fd077966929"
 dependencies = [
  "const_for",
  "derive_more",
@@ -572,6 +573,7 @@ dependencies = [
 [[package]]
 name = "pure_lang_binary_proc_macros"
 version = "0.1.0"
+source = "git+https://github.com/ExPuritate/purelang_binary.git#17e9f0c0f6bbbb4620e4b05585d21fd077966929"
 dependencies = [
  "proc-macro-crate",
  "proc-macro2",
@@ -600,6 +602,7 @@ dependencies = [
 [[package]]
 name = "pure_lang_global"
 version = "0.1.0"
+source = "git+https://github.com/ExPuritate/purelang_global.git#24688a521fd75258571979bc2945aec3caf4c2a6"
 dependencies = [
  "anyhow",
  "bon",
@@ -625,6 +628,7 @@ dependencies = [
 [[package]]
 name = "pure_lang_proc_macros"
 version = "0.1.0"
+source = "git+https://github.com/ExPuritate/purelang_global.git#24688a521fd75258571979bc2945aec3caf4c2a6"
 dependencies = [
  "convert_case 0.8.0",
  "proc-macro-crate",
@@ -639,6 +643,7 @@ dependencies = [
 name = "pure_lang_runtime"
 version = "0.1.0"
 dependencies = [
+ "cfg-if",
  "codepage",
  "const_format",
  "derive_more",
@@ -1170,19 +1175,3 @@ checksum = "f3edebf492c8125044983378ecb5766203ad3b4c2f7a922bd7dd207f6d443e95"
 dependencies = [
  "memchr",
 ]
-
-[[patch.unused]]
-name = "pure_lang_compiler_shared"
-version = "0.1.0"
-
-[[patch.unused]]
-name = "peg"
-version = "0.8.5"
-
-[[patch.unused]]
-name = "pure_lang_dynamic"
-version = "0.1.0"
-
-[[patch.unused]]
-name = "pure_lang_compile_service_export"
-version = "0.1.0"

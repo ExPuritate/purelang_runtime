@@ -149,7 +149,6 @@ impl CPU {
                     .get_method(method_ref)?
                     .call(self.clone(), this_val, arguments)
             }
-            TypeHandle::Interface(_interface) => todo!(),
             TypeHandle::Struct(s) => {
                 s.mt()
                     .get_method(method_ref)?
@@ -171,7 +170,6 @@ impl CPU {
                     .get_method(method_ref)?
                     .call(self.clone(), &mut Value::Void, args)
             }
-            TypeHandle::Interface(_interface) => todo!(),
             TypeHandle::Struct(s) => {
                 s.mt()
                     .get_method(method_ref)?
