@@ -1,5 +1,5 @@
 use crate::type_system::{
-    Assembly, Class, CommonMethod, CommonMethodTable, Interface, Struct, TypeHandle, TypeVar,
+    Assembly, Class, CommonMethod, CommonMethodTable, Struct, TypeHandle, TypeVar,
 };
 use global::instruction::StringInstruction;
 use global::{IndexMap, StringName};
@@ -56,13 +56,6 @@ impl GetTypeName for Class {
 }
 
 #[sealed]
-impl GetTypeName for Interface {
-    fn name(&self) -> StringName {
-        self.name().clone()
-    }
-}
-
-#[sealed]
 impl GetTypeName for Struct {
     fn name(&self) -> StringName {
         self.name().clone()
@@ -78,13 +71,6 @@ impl GetAssembly for TypeHandle {
 
 #[sealed]
 impl GetAssemblyMust for Class {
-    fn must_assembly(&self) -> Arc<Assembly> {
-        self.assem()
-    }
-}
-
-#[sealed]
-impl GetAssemblyMust for Interface {
     fn must_assembly(&self) -> Arc<Assembly> {
         self.assem()
     }
@@ -129,13 +115,6 @@ impl GetTypeVars for Class {
 }
 
 #[sealed]
-impl GetTypeVars for Interface {
-    fn type_vars(&self) -> Arc<IndexMap<StringName, TypeVar>> {
-        self.type_vars.clone()
-    }
-}
-
-#[sealed]
 impl GetTypeVars for Struct {
     fn type_vars(&self) -> Arc<IndexMap<StringName, TypeVar>> {
         self.type_vars.clone()
@@ -149,13 +128,6 @@ pub trait GetMethodTable: Any + GetTypeName + Sized {
 
 #[sealed]
 impl GetMethodTable for Class {
-    fn mt_ptr(&self) -> *mut CommonMethodTable<Self> {
-        self.mt.get()
-    }
-}
-
-#[sealed]
-impl GetMethodTable for Interface {
     fn mt_ptr(&self) -> *mut CommonMethodTable<Self> {
         self.mt.get()
     }
@@ -188,16 +160,6 @@ impl MTGetParent<Class> for CommonMethodTable<Class> {
     fn _parent(&self) -> Option<Arc<Class>> {
         match self.parent.clone()? {
             TypeHandle::Class(c) => Some(c),
-            _ => None,
-        }
-    }
-}
-
-#[sealed]
-impl MTGetParent<Interface> for CommonMethodTable<Interface> {
-    fn _parent(&self) -> Option<Arc<Interface>> {
-        match self.parent.clone()? {
-            TypeHandle::Interface(i) => Some(i),
             _ => None,
         }
     }

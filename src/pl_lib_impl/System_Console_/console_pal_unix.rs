@@ -2,7 +2,7 @@ use std::os::fd::{FromRawFd, RawFd};
 #[path = "./console_pal_unix/util.rs"]
 mod util;
 
-use crate::pl_lib_impl::System_Console_::console_pal::util::{Handle, check_io, sys};
+use crate::pl_lib_impl::System_Console_::console_pal::util::{check_io, sys, Handle};
 use encoding_rs::Encoding;
 use std::ffi::c_void;
 use std::os::fd::{AsRawFd, OwnedFd};

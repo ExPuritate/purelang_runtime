@@ -1,5 +1,5 @@
 use super::{
-    AssemblyManager, Class, CommonMethod, Interface, Struct, TypeHandle,
+    AssemblyManager, Class, CommonMethod, Struct, TypeHandle,
     get_traits::{GetAssemblyMust, GetTypeName},
 };
 use crate::type_system::get_traits::{GetFieldCount, GetMethodTable, MTGetParent};
@@ -126,12 +126,6 @@ impl<T: Any + GetTypeName> CommonMethodTable<T> {
 
 impl CommonMethodTable<Class> {
     pub fn class(&self) -> Arc<Class> {
-        self.ty()
-    }
-}
-
-impl CommonMethodTable<Interface> {
-    pub fn interface(&self) -> Arc<Interface> {
         self.ty()
     }
 }

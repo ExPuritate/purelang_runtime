@@ -3,7 +3,7 @@
 
 pub extern crate binary;
 
-use global::{StringMethodReference, StringName};
+use global::StringName;
 use std::any::Any;
 use std::sync::Arc;
 

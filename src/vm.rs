@@ -4,7 +4,6 @@ mod tests;
 
 use std::{
     collections::HashMap,
-    slice::SliceIndex,
     sync::{Arc, RwLock},
 };
 

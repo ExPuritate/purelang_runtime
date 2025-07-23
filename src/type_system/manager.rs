@@ -13,6 +13,7 @@ use crate::pl_lib_impl::System_String::System_String;
 use crate::pl_lib_impl::System_ValueType::System_ValueType;
 use crate::pl_lib_impl::System_Void::System_Void;
 use crate::pl_lib_impl::{ClassLoadToCore, StructLoadToCore, System_Integers};
+use crate::type_system::Interface;
 use crate::type_system::Struct;
 use crate::type_system::StructField;
 use binary::TypeDef;

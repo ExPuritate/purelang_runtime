@@ -1,6 +1,6 @@
 use crate::pl_lib_impl::System_Console_::console_pal::ConsoleFile;
 use encoding_rs::Encoding;
-use enumflags2::{BitFlags, bitflags};
+use enumflags2::{bitflags, BitFlags};
 use global::errors::{RuntimeError, RuntimeMayBeInvalidOperation};
 use global::getset::CopyGetters;
 use std::hash::{Hash, Hasher};
@@ -463,7 +463,7 @@ pub mod to_vm {
     };
     use global::errors::{DynamicCheckingItem, RuntimeError};
     use global::{
-        IndexMap, StringMethodReference, StringName, StringTypeReference, indexmap, string_name,
+        indexmap, string_name, IndexMap, StringMethodReference, StringName, StringTypeReference,
     };
     use std::io::Write;
     use std::panic::Location;
@@ -474,10 +474,10 @@ pub mod to_vm {
     impl System_Console {
         /// Sign: `.sctor()`
         fn sctor(
-            method: &CommonMethod<Class>,
-            cpu: Arc<CPU>,
-            this_val: &mut Value,
-            args: &mut [Value],
+            _method: &CommonMethod<Class>,
+            _cpu: Arc<CPU>,
+            _this_val: &mut Value,
+            _args: &mut [Value],
             _register_start: u64,
         ) -> global::Result<Value> {
             super::input_encoding();
@@ -524,7 +524,7 @@ pub mod to_vm {
 
         /// Sign: `WriteLine([!]System.String)`
         fn WriteLine__System_String(
-            method: &CommonMethod<Class>,
+            _method: &CommonMethod<Class>,
             cpu: Arc<CPU>,
             this_val: &mut Value,
             args: &mut [Value],

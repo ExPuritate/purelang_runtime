@@ -1,7 +1,6 @@
 mod assembly;
 mod class;
 pub mod get_traits;
-mod interface;
 mod manager;
 mod method;
 mod method_table;
@@ -13,7 +12,6 @@ mod type_handle;
 pub use assembly::Assembly;
 pub use class::{Class, Field as ClassField};
 use global::StringName;
-pub use interface::Interface;
 pub use manager::AssemblyManager;
 pub use method::CommonMethod;
 use std::fmt::{Debug, Formatter};

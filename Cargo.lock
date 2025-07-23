@@ -1170,3 +1170,19 @@ checksum = "f3edebf492c8125044983378ecb5766203ad3b4c2f7a922bd7dd207f6d443e95"
 dependencies = [
  "memchr",
 ]
+
+[[patch.unused]]
+name = "pure_lang_compiler_shared"
+version = "0.1.0"
+
+[[patch.unused]]
+name = "peg"
+version = "0.8.5"
+
+[[patch.unused]]
+name = "pure_lang_dynamic"
+version = "0.1.0"
+
+[[patch.unused]]
+name = "pure_lang_compile_service_export"
+version = "0.1.0"

@@ -136,6 +136,7 @@ fn test_to_string() -> Result<()> {
                         string_name!("Main([!]System.Array`1[[!]System.String])"),
                         MethodAttr::new(Visibility::Public, make_bitflags!(MethodImplementationFlags::{}), 10),
                         mt_ptr, vec![
+                            #[allow(deprecated)]
                             StringInstruction::LoadAllArgsAsArray { register_addr: 0 },
                             StringInstruction::InstanceCall {
                                 val: 0,
