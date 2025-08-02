@@ -5,7 +5,7 @@ edition = "2024"
 
 [workspace]
 package.version = "0.1.0"
-members = ["crates/gc", "crates/gc_derive"]
+members = ["crates/gc", "crates/gc_derive", "crates/export"]
 
 [workspace.dependencies]
 global = { package = "pure_lang_global", git = "https://github.com/ExPuritate/purelang_global.git" }
